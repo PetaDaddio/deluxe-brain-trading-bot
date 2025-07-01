@@ -1,0 +1,30 @@
+{
+  "name": "deluxe-brain-trading-bot",
+  "version": "1.0.0",
+  "description": "Advanced Solana Whale Intelligence System with Linda Bradford Raschke Trading Methodology",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^14.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "lucide-react": "^0.263.1",
+    "@solana/web3.js": "^1.87.6",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0"
+  },
+  "keywords": ["solana", "whale-tracker", "crypto", "trading", "defi"],
+  "author": "Linda Bradford Raschke & Claude",
+  "license": "MIT"
+}
