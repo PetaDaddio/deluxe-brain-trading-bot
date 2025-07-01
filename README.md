@@ -12,7 +12,7 @@ Deluxe Brain combines 40 years of Linda Bradford Raschke trading wisdom with cut
 - ML-powered whale cluster analysis (87-91% accuracy)
 - Linda Bradford Raschke pattern recognition
 - Automated Telegram alerts
-- Professional trading signals
+- Professional trading signals 
 
 ## 🛠️ Tech Stack
 
