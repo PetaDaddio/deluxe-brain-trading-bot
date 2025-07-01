@@ -218,3 +218,16 @@ def health_check():
     return jsonify({
         "status": "healthy",
         "service": "Deluxe
+# Health check endpoint
+@app.route('/health', methods=['GET'])
+def health_check():
+   return jsonify({
+       "status": "healthy",
+       "service": "Deluxe Brain Trading Bot API",
+       "version": "1.0.0",
+       "timestamp": datetime.now().isoformat()
+   })
+
+if __name__ == '__main__':
+   app.run(debug=True)
+        
