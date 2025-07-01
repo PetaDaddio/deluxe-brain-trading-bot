@@ -20,13 +20,11 @@ const SolanaWhaleTracker = () => {
   // Simulate real-time connection and data
   useEffect(() => {
     const connectToRPC = async () => {
-      // Simulate connection to Helius RPC
       setTimeout(() => {
         setIsConnected(true);
         console.log('Connected to Helius RPC');
       }, 2000);
     };
-
     connectToRPC();
   }, []);
 
@@ -55,7 +53,6 @@ const SolanaWhaleTracker = () => {
 
     setTransactions(prev => [newTransaction, ...prev.slice(0, 9)]);
 
-    // Create whale alert for large transactions
     if (newTransaction.valueUSD > 500) {
       const alert = {
         id: Date.now(),
@@ -64,17 +61,13 @@ const SolanaWhaleTracker = () => {
         timestamp: new Date()
       };
       setWhaleAlerts(prev => [alert, ...prev.slice(0, 4)]);
-      
-      // Simulate Telegram alert
       sendTelegramAlert(newTransaction);
     }
   }, []);
 
   const sendTelegramAlert = async (transaction) => {
     const message = `🐋 WHALE ALERT 🐋\n\n${transaction.action}: ${(transaction.amount / 1000000).toFixed(1)}M $USELESS\n💰 Value: $${transaction.valueUSD.toFixed(2)}\n🎯 Confidence: ${transaction.confidence}%\n⏰ Time: ${transaction.timestamp.toLocaleTimeString()}\n👛 Wallet: ${transaction.wallet.substring(0, 8)}...${transaction.wallet.substring(-6)}\n\n🔍 Full wallet: ${transaction.wallet}`;
-
     console.log('Telegram Alert:', message);
-    // In production, this would call the Telegram Bot API
   };
 
   // Simulate price updates
@@ -86,20 +79,17 @@ const SolanaWhaleTracker = () => {
       });
       setPriceChange((Math.random() - 0.5) * 20);
     }, 5000);
-
     return () => clearInterval(interval);
   }, []);
 
   // Simulate whale detection
   useEffect(() => {
     if (!isConnected) return;
-
     const interval = setInterval(() => {
       if (Math.random() > 0.7) {
         simulateWhaleDetection();
       }
     }, 8000);
-
     return () => clearInterval(interval);
   }, [isConnected, simulateWhaleDetection]);
 
@@ -119,7 +109,7 @@ const SolanaWhaleTracker = () => {
         },
         {
           id: 2,
-          token: 'WIF',
+          token: 'WIF', 
           pattern: patterns[Math.floor(Math.random() * patterns.length)],
           confidence: Math.floor(Math.random() * 15) + 85,
           entry: '$2.45',
@@ -139,9 +129,7 @@ const SolanaWhaleTracker = () => {
     <button
       onClick={onClick}
       className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
-        isActive 
-          ? 'bg-blue-600 text-white shadow-lg' 
-          : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+        isActive ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
       }`}
     >
       <Icon size={18} />
@@ -155,9 +143,7 @@ const SolanaWhaleTracker = () => {
     }`}>
       <div className="flex justify-between items-start">
         <div>
-          <span className={`font-bold ${
-            transaction.action === 'BUY' ? 'text-green-400' : 'text-red-400'
-          }`}>
+          <span className={`font-bold ${transaction.action === 'BUY' ? 'text-green-400' : 'text-red-400'}`}>
             {transaction.action}
           </span>
           <span className="text-gray-300 ml-2">
@@ -188,7 +174,6 @@ const SolanaWhaleTracker = () => {
           {cluster.status}
         </span>
       </div>
-      
       <div className="space-y-2 text-sm">
         <div className="flex justify-between">
           <span className="text-gray-400">Wallets:</span>
@@ -218,7 +203,6 @@ const SolanaWhaleTracker = () => {
           <div className="text-xs text-gray-400">Confidence</div>
         </div>
       </div>
-      
       <div className="space-y-2 text-sm mb-3">
         <div className="flex justify-between">
           <span className="text-gray-400">Entry:</span>
@@ -229,11 +213,9 @@ const SolanaWhaleTracker = () => {
           <span className="text-yellow-400">{opportunity.target}</span>
         </div>
       </div>
-      
       <div className="text-xs text-gray-300 italic">
         {opportunity.analysis}
       </div>
-      
       <button 
         onClick={() => navigator.clipboard.writeText(opportunity.token)}
         className="w-full mt-3 bg-yellow-600 hover:bg-yellow-700 py-2 rounded text-xs font-bold"
@@ -356,3 +338,139 @@ const SolanaWhaleTracker = () => {
                 </h2>
                 
                 <div className="space-y-3">
+                  {whaleAlerts.length === 0 ? (
+                    <p className="text-gray-400 text-center py-4">
+                      Monitoring for whale activity...
+                    </p>
+                  ) : (
+                    whaleAlerts.map(alert => (
+                      <div key={alert.id} className="bg-yellow-900/20 border border-yellow-500/30 rounded p-3">
+                        <div className="text-yellow-400 font-bold">🐋 WHALE DETECTED</div>
+                        <div className="text-sm text-gray-300 mt-1">
+                          {alert.transaction.action} ${alert.transaction.valueUSD.toFixed(0)} • {alert.transaction.confidence}%
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Live Transactions */}
+            <div className="lg:col-span-2">
+              <div className="bg-gray-900 rounded-lg p-6">
+                <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                  <Activity className="text-blue-400" />
+                  Live Whale Transactions
+                </h2>
+                
+                <div className="space-y-3 max-h-96 overflow-y-auto">
+                  {transactions.length === 0 ? (
+                    <div className="text-center py-8">
+                      <div className="animate-pulse">
+                        <Activity className="mx-auto text-blue-400 mb-2" size={32} />
+                        <p className="text-gray-400">Scanning blockchain for whale activity...</p>
+                      </div>
+                    </div>
+                  ) : (
+                    transactions.map(transaction => (
+                      <TransactionCard key={transaction.id} transaction={transaction} />
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'whales' && (
+          <div className="bg-gray-900 rounded-lg p-6">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+              <Users className="text-blue-400" />
+              Individual Whale Tracking
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {transactions.slice(0, 6).map(transaction => (
+                <div key={transaction.id} className="bg-gray-800 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs text-gray-400">
+                      {transaction.wallet.substring(0, 8)}...{transaction.wallet.substring(-6)}
+                    </span>
+                    <span className={`px-2 py-1 rounded text-xs font-bold ${
+                      transaction.confidence >= 90 ? 'bg-green-900 text-green-400' :
+                      transaction.confidence >= 85 ? 'bg-yellow-900 text-yellow-400' :
+                      'bg-red-900 text-red-400'
+                    }`}>
+                      {transaction.confidence}%
+                    </span>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Last Action:</span>
+                      <span className={transaction.action === 'BUY' ? 'text-green-400' : 'text-red-400'}>
+                        {transaction.action}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Amount:</span>
+                      <span className="text-white">{(transaction.amount / 1000000).toFixed(1)}M</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Value:</span>
+                      <span className="text-yellow-400">${transaction.valueUSD.toFixed(0)}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'clusters' && (
+          <div>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
+                <Target className="text-blue-400" />
+                ML Whale Clusters
+              </h2>
+              <p className="text-gray-400">
+                Connected to Notion whale intelligence databases
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {clusters.map((cluster, index) => (
+                <ClusterCard key={index} cluster={cluster} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'opportunities' && (
+          <div>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
+                <Zap className="text-yellow-400" />
+                Trading Opportunities
+              </h2>
+              <p className="text-gray-400">
+                Based on Linda Bradford Raschke methodology + whale patterns
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {opportunities.map(opportunity => (
+                <OpportunityCard key={opportunity.id} opportunity={opportunity} />
+              ))}
+            </div>
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
+};
+
+export default SolanaWhaleTracker;
