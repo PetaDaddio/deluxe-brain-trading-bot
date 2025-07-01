@@ -1,8 +1,30 @@
 {
-  "framework": "nextjs",
+  "functions": {
+    "api/app.py": {
+      "runtime": "python3.9"
+    }
+  },
+  "routes": [
+    {
+      "src": "/rpc",
+      "dest": "/api/app"
+    },
+    {
+      "src": "/schema", 
+      "dest": "/api/app"
+    },
+    {
+      "src": "/health",
+      "dest": "/api/app"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
   "env": {
     "HELIUS_RPC_URL": "@helius_rpc_url",
-    "TELEGRAM_BOT_TOKEN": "@telegram_bot_token", 
+    "TELEGRAM_BOT_TOKEN": "@telegram_bot_token",
     "TELEGRAM_CHAT_ID": "@telegram_chat_id"
   }
 }
